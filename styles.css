@@ -9,6 +9,11 @@
     margin: 0;
     height: 100%;
   }
+
+  .place-picker-container {
+    padding: 20px;
+  }
+
   
   a {
     text-decoration: none;

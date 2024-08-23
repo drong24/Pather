@@ -6,20 +6,12 @@
     <!-- The callback parameter is required, so we use console.debug as a noop -->
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvD4e8DS0mw-dLxh2AbXBAfduvaIHROrM&callback=console.debug&libraries=maps,marker&v=beta">
     </script>
+    <script src="script.js"></script>
+      <script type="module" src="https://unpkg.com/@googlemaps/extended-component-library@0.6">
+      </script>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-      gmp-map {
-        height: 100%;
-      }
-
-      /* Optional: Makes the sample page fill the window. */
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
     </style>
   </head>
   <body>
@@ -142,8 +134,16 @@
           </div>
         </div>
       </div>
-    <gmp-map id="map" center="40.12150192260742,-100.45039367675781" zoom="4" map-id="DEMO_MAP_ID">
-        <gmp-advanced-marker position="40.12150192260742,-100.45039367675781" title="My location"></gmp-advanced-marker>
+    <gmpx-api-loader key="AIzaSyCvD4e8DS0mw-dLxh2AbXBAfduvaIHROrM" solution-channel="GMP_GE_mapsandplacesautocomplete_v1">
+    </gmpx-api-loader>
+        <gmp-map id="map" center="40.749933,-73.98633" zoom="13" map-id="DEMO_MAP_ID">
+        <div slot="control-block-start-inline-start" class="place-picker-container">
+            <gmpx-place-picker placeholder="Enter an address"></gmpx-place-picker>
+        </div>
+      <gmp-advanced-marker></gmp-advanced-marker>
     </gmp-map>
   </body>
 </html>
+
+
+ 
