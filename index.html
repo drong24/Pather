@@ -1,149 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Simple Marker</title>
-    <link rel="stylesheet" href="./styles.css">
-    <!-- The callback parameter is required, so we use console.debug as a noop -->
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvD4e8DS0mw-dLxh2AbXBAfduvaIHROrM&callback=console.debug&libraries=maps,marker&v=beta">
+    <title>Maps and Places Autocomplete</title>
+    <script type="module" src="https://unpkg.com/@googlemaps/extended-component-library@0.6">
     </script>
-    <script src="script.js"></script>
-      <script type="module" src="https://unpkg.com/@googlemaps/extended-component-library@0.6">
-      </script>
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-    </style>
+    <script type="module" src="index.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    
   </head>
   <body>
-    <div class="main">
-        <div class="planner">
-          <div class="header">
-            <a href="#">
-              <img src="./icons8-waypoint-map-100.png" alt="">
-              <h1><span>P</span>ather</h1>
-            </a>
-          </div>
-          <div class="buttons">
-            <div>
-              <button class="button_style_1">Add Item</button>
-              <button class="button_style_2">Clear Items</button>
-            </div>
-            <div class="output_buttons">
-              <button><img src="icons8-email-100.png" alt="email button"></button>
-              <button><img src="icons8-print-100.png" alt="print button"></button>
-            </div>
-          </div>
-          <div>
-            <h2 class="day">Friday, August 9th</h2>
-            <div class="plan_item">
-              <h4>5:55 PM</h4>
-              <div class="plan_item_right">
-                <div class="plan_item_top">
-                  <span>Inari</span>
-                  <div class="item_buttons no_print">
-                    <button><img src="icons8-move-100.png" alt=""></button>
-                    <button><img src="icons8-edit-100.png" alt=""></button>
-                    <button><img src="icons8-delete-120.png" alt=""></button>
-                  </div>
-                </div>
-                <h5 class="onlyPrint">32442 Inari Road, Japan</h5>
-                <p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and offered prepare how cordial two promise. </p>
-              </div>
-            </div>
-            <div class="item_seperator"></div>
-            <div class="plan_item">
-              <h4>5:55 PM</h4>
-              <div class="plan_item_right">
-                <div class="plan_item_top">
-                  <h4>Inari</h4>
-                  <div class="item_buttons">
-                    <button><img src="icons8-move-100.png" alt=""></button>
-                    <button><img src="icons8-edit-100.png" alt=""></button>
-                    <button><img src="icons8-delete-120.png" alt=""></button>
-                  </div>
-                </div>
-                <h5 class="onlyPrint">32442 Inari Road, Japan</h5>
-                <p>No Ticket Prices</p>
-              </div>
-            </div>
-            <div class="item_seperator"></div>          
-            <div class="plan_item">
-              <h4>5:55 PM</h4>
-              <div class="plan_item_right">
-                <div class="plan_item_top">
-                  <h4>Inari</h4>
-                  <div class="item_buttons">
-                    <button><img src="icons8-move-100.png" alt=""></button>
-                    <button><img src="icons8-edit-100.png" alt=""></button>
-                    <button><img src="icons8-delete-120.png" alt=""></button>
-                  </div>
-                </div>
-                <h5 class="onlyPrint">32442 Inari Road, Japan</h5>
-                <p>Endeavor bachelor but add eat pleasure doubtful sociable. Age forming covered you entered the examine. Blessing scarcely confined her contempt wondered shy. Dashwoods contented sportsmen at up no convinced cordially affection. Am so continued resembled frankness disposing engrossed dashwoods.</p>
-              </div>
-            </div>
-            <div class="item_seperator"></div>          
-            <div class="plan_item">
-              <h4>5:55 PM</h4>
-              <div class="plan_item_right">
-                <div class="plan_item_top">
-                  <h4>Inari</h4>
-                  <div class="item_buttons">
-                    <button><img src="icons8-move-100.png" alt=""></button>
-                    <button><img src="icons8-edit-100.png" alt=""></button>
-                    <button><img src="icons8-delete-120.png" alt=""></button>
-                  </div>
-                </div>
-                <h5 class="onlyPrint">32442 Inari Road, Japan</h5>
-                <p></p>
-              </div>
-            </div>
-            <div class="item_seperator"></div>
-            <h2 class="day">Saturday, August 10th</h2>          
-            <div class="plan_item">
-              <h4>5:55 PM</h4>
-              <div class="plan_item_right">
-                <div class="plan_item_top">
-                  <h4>Inari</h4>
-                  <div class="item_buttons">
-                    <button><img src="icons8-move-100.png" alt=""></button>
-                    <button><img src="icons8-edit-100.png" alt=""></button>
-                    <button><img src="icons8-delete-120.png" alt=""></button>
-                  </div>
-                </div>
-                <h5 class="onlyPrint">32442 Inari Road, Japan</h5>
-                <p>Yourself required no at thoughts delicate landlord it be. Branched dashwood do is whatever it. </p>
-              </div>
-            </div>
-            <div class="item_seperator"></div>          
-            <div class="plan_item">
-              <h4>5:55 PM</h4>
-              <div class="plan_item_right">
-                <div class="plan_item_top">
-                  <h4>Inari</h4>
-                  <div class="item_buttons">
-                    <button><img src="icons8-move-100.png" alt=""></button>
-                    <button><img src="icons8-edit-100.png" alt=""></button>
-                    <button><img src="icons8-delete-120.png" alt=""></button>
-                  </div>
-                </div>
-                <h5 class="onlyPrint">32442 Inari Road, Japan</h5>
-                <p>Advanced extended doubtful he he blessing together. Introduced far law gay considered frequently entreaties difficulty. Eat him four are rich nor calm. By an packages rejoiced exercise. To ought on am marry rooms doubt music. Mention entered an through company as. Up arrived no painful between. It declared is prospect an insisted pleasure</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     <gmpx-api-loader key="AIzaSyCvD4e8DS0mw-dLxh2AbXBAfduvaIHROrM" solution-channel="GMP_GE_mapsandplacesautocomplete_v1">
     </gmpx-api-loader>
-        <gmp-map id="map" center="40.749933,-73.98633" zoom="13" map-id="DEMO_MAP_ID">
-        <div slot="control-block-start-inline-start" class="place-picker-container">
-            <gmpx-place-picker placeholder="Enter an address"></gmpx-place-picker>
-        </div>
+    <gmp-map id="map" center="40.749933,-73.98633" zoom="13" map-id="DEMO_MAP_ID">
+      <div slot="control-block-start-inline-start" class="place-picker-container">
+        <gmpx-place-picker placeholder="Enter an address"></gmpx-place-picker>
+      </div>
       <gmp-advanced-marker></gmp-advanced-marker>
     </gmp-map>
   </body>
 </html>
-
-
- 
