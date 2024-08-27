@@ -3,15 +3,66 @@
 async function init() {
 
   const { Map } = await google.maps.importLibrary("maps");
+  const { Place } = await google.maps.importLibrary("places");
+  const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
+  let infowindow = null;
+  let marker = null;
+
+  // create map
   const mapDiv = document.getElementById("map");
   const map = new google.maps.Map(mapDiv, {
     zoom: 15,
     center: new google.maps.LatLng(37.4419, -122.1419),
+    mapId: "b59f8219183c11de"
   });
 
-  google.maps.event.addListener(map, 'click', function(e) {
+  // displays info window on icon click
+  google.maps.event.addListener(map, 'click', async function(e) {
     console.log(e.placeId);
     e.stop();
+    const place = new Place ({
+      id: e.placeId,
+      requestedLanguage: "en"
+    });
+    
+    await place.fetchFields({
+      fields: ["location", "displayName", "formattedAddress", "rating", "userRatingCount", "reviews", "priceLevel", "photos"]
+    });
+    console.log(place.photos[0]);
+    // removes info window if another icon is selected
+    if (infowindow != null) {
+      infowindow.close();
+    }
+
+   infowindow = new google.maps.InfoWindow({
+      content: 
+      `<div>
+        <img src="${place.photos[0].getURI({maxHeight: 120})}">
+        <h3>${place.displayName}</h3>
+        <p>${place.rating} (${place.userRatingCount})</p>
+        <p>${place.formattedAddress}</p>
+      </div>`,
+      ariaLabel: `${place.displayName}`
+    });
+
+  marker = new AdvancedMarkerElement({
+      position: place.location,
+      map: map
+    });
+
+    infowindow.open({
+      anchor: marker,
+      map
+    });
+
+    // removes anchored marker when info window closes
+    infowindow.addListener('close', () => {
+      marker.setMap(null);
+    });
+
+    console.log(place.displayName);
+    console.log(place.rating + ` (${place.userRatingCount})`);
+    
   });
 
   /*
