@@ -8,3 +8,11 @@ body {
 .place-picker-container {
   padding: 20px;
 }
+
+.icon-button-container {
+  padding: 20px;
+}
+
+#map {
+  height: 100vh;
+}
