@@ -1,3 +1,9 @@
+
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
 html,
 body {
   height: 100%;
@@ -16,3 +22,48 @@ body {
 #map {
   height: 100vh;
 }
+
+/* info window styling */
+.info_window {
+  height: 180px;
+  width: 400px;
+  overflow: scroll;
+}
+.info_window_info {
+  display: flex;
+  height: 100%;
+}
+.info_window_left {
+  width: 140px;
+  margin-right: 20px;
+}
+.info_window_left img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border: 1px solid black;
+}
+.info_window_right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.info_window_content p:nth-child(2) {
+  color: goldenrod;
+}
+.info_window_right p:nth-child(4) {
+  margin-bottom: 15px;
+}
+.info_window_right div button {
+  margin-left: 6px;
+  padding: 6px;
+  border: none;
+  border-radius: 10px;
+  background-color: darkorange;
+  color: white;
+
+} 
+.info_window_right div button:hover {
+  background-color: rgb(237, 131, 1);
+  cursor: pointer;
+} 

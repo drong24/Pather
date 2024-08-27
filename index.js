@@ -26,9 +26,10 @@ async function init() {
     });
     
     await place.fetchFields({
-      fields: ["location", "displayName", "formattedAddress", "rating", "userRatingCount", "reviews", "priceLevel", "photos"]
+      fields: ["location", "displayName", "formattedAddress", "rating", "userRatingCount", "reviews", 
+      "priceLevel", "photos", "websiteURI", "nationalPhoneNumber", "regularOpeningHours"]
     });
-    console.log(place.photos[0]);
+
     // removes info window if another icon is selected
     if (infowindow != null) {
       infowindow.close();
@@ -36,11 +37,26 @@ async function init() {
 
    infowindow = new google.maps.InfoWindow({
       content: 
-      `<div>
-        <img src="${place.photos[0].getURI({maxHeight: 120})}">
-        <h3>${place.displayName}</h3>
-        <p>${place.rating} (${place.userRatingCount})</p>
-        <p>${place.formattedAddress}</p>
+      `<div class="info_window">
+        <div class="info_window_info">
+          <div class="info_window_left">          
+            <img src="${place.photos[0].getURI({maxHeight: 120})}">
+          </div>
+          <div class="info_window_right">
+            <div class="info_window_content">
+              <h3>${place.displayName}</h3>
+              <p>${place.rating} (${place.userRatingCount})</p>
+              <p>${place.formattedAddress}</p> 
+              <p>Price: ${(place.priceLevel == null) ? "No price estimate" : place.priceLevel}</p> 
+              <p>${(place.nationalPhoneNumber == null) ? "" : place.nationalPhoneNumber}</p> 
+              <p>${place.websiteURI}</p> 
+            </div>
+            <div class="info_window_buttons">
+              <a href="${place.websiteURI}">Open in Google Maps</a>
+              <button>Add to trip</button>
+            </div>
+          </div>
+        </div>
       </div>`,
       ariaLabel: `${place.displayName}`
     });
@@ -59,10 +75,6 @@ async function init() {
     infowindow.addListener('close', () => {
       marker.setMap(null);
     });
-
-    console.log(place.displayName);
-    console.log(place.rating + ` (${place.userRatingCount})`);
-    
   });
 
   /*
