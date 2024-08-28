@@ -1,4 +1,28 @@
-
+function addToTrip() {
+  const planList = document.getElementById('plan_list');
+  const itemSeperator = "<div class='item_seperator'></div>";
+  const planItem = 
+  `<div class="plan_item">
+  <h4>5:55 PM</h4>
+  <div class="plan_item_right">
+    <div class="plan_item_top">
+      <span>${this.name}</span>
+      <div class="item_buttons no_print">
+        <button><img src="/icons8-move-100.png" alt=""></button>
+        <button><img src="/icons8-edit-100.png" alt=""></button>
+        <button><img src="/icons8-delete-120.png" alt=""></button>
+      </div>
+    </div>
+    <h5 class="onlyPrint">${this.address}</h5>
+    <p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and offered prepare how cordial two promise. </p>
+  </div>
+</div>
+`;
+  if (planList.hasChildNodes()) {
+    planList.append(itemSeperator);
+  }
+  planList.append(planItem);
+}
 
 async function init() {
 
@@ -52,8 +76,8 @@ async function init() {
               <p>${place.websiteURI}</p> 
             </div>
             <div class="info_window_buttons">
-              <a href="${place.websiteURI}">Open in Google Maps</a>
-              <button>Add to trip</button>
+              <a target=”_blank” href="https://www.google.com/maps/place/?q=place_id:${e.placeId}">Open in Google Maps</a>
+              <button id="add_to_trip_button">Add to trip</button>
             </div>
           </div>
         </div>
@@ -132,8 +156,9 @@ async function init() {
     });
     */
   }
-  
+
 document.addEventListener('DOMContentLoaded', init);
+document.getElementById('add_to_trip_button').addEventListener('click', addToTrip);
 
 
   // Nearby Search

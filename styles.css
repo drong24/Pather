@@ -21,6 +21,8 @@ body {
 
 #map {
   height: 100vh;
+  width: 60vw;
+  float: right;
 }
 
 /* info window styling */
@@ -67,3 +69,200 @@ body {
   background-color: rgb(237, 131, 1);
   cursor: pointer;
 } 
+
+
+/* Item Planner Styling */
+* {
+  margin: 0;
+  padding: 0;
+  color: black;
+  font-family:'Times New Roman', Times, serif;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+p {
+  color: rgb(144, 144, 144);
+  font-size: 10pt;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+h4 {
+  width: 100px;
+}
+
+h5 {
+  font-weight: 100;
+}
+
+@media (max-width: 750px) {
+  #map {
+    display: none;
+  }
+
+  .planner {
+    width: 96% !important;
+  }
+}
+
+@media screen {
+  .onlyPrint {
+      display: none;
+  }
+}
+
+@media print {
+  .no_print {
+    display: none;
+  }
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 60%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.left_buttons > button {
+  border: 1px solid grey;
+  border-radius: 10px;
+  background-color: inherit;
+  padding: 5px;
+}
+
+.button_style_1 {
+  border: none;
+  border-radius: 10px;
+  background-color: darkorange;
+  color: white;
+  padding: 7px;
+}
+
+.button_style_1:hover {
+  background-color: rgb(236, 130, 0);
+}
+
+.button_style_2 {
+  border: 1px solid darkorange;
+  background-color: inherit;
+  padding: 6px;
+  border-radius: 10px;
+}
+
+.button_style_2:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.output_buttons> button {
+  background-color: inherit;
+  border: none;
+  padding: 5px;
+}
+
+.buttons > div > button > img {
+  width: 20px;
+  height: 20px;
+}
+
+.planner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 36%;
+  overflow: scroll;
+  padding: 2%;
+  background-color: white;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+.header > a {
+  display: flex;
+  align-items: center;
+}
+.header > a > h1 {
+  margin-left: 20px;
+}
+h1 > span {
+  color: darkorange;
+}
+.header > a > img {
+  width: 65px;
+}
+
+.day {
+  padding: 0px;
+  margin-bottom: 10px;
+  border-bottom: 3px solid darkorange;
+}
+
+.plan_item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plan_item > p {
+  font-weight: 900;
+  font-size: 15pt;
+  color: black;
+}
+.plan_item_right {
+  background-color: whitesmoke;
+  width: 100%;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.plan_item_top > span {
+  font-size: 13pt;
+  font-weight: bold;
+}
+
+.plan_item_top > h4 > span {
+  font-size: 10pt;
+  font-weight: 100;
+  color: grey;
+  margin-left: 30px;
+}
+
+.item_seperator {
+  height: 1.5rem;
+  width: 2px;
+  margin-left: 106px;
+  background-color: grey;
+}
+.plan_item_top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+.item_buttons > button {
+  border: none;
+  background-color: inherit;
+}
+.item_buttons > button > img{
+  width: 20px;
+  height: 20px;
+}
