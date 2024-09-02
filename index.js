@@ -1,3 +1,4 @@
+/* 
 function addToTrip() {
   const planList = document.getElementById('plan_list');
   const itemSeperator = "<div class='item_seperator'></div>";
@@ -23,6 +24,7 @@ function addToTrip() {
   }
   planList.append(planItem);
 }
+*/
 
 async function init() {
 
@@ -73,7 +75,7 @@ async function init() {
               <p>${place.formattedAddress}</p> 
               <p>Price: ${(place.priceLevel == null) ? "No price estimate" : place.priceLevel}</p> 
               <p>${(place.nationalPhoneNumber == null) ? "" : place.nationalPhoneNumber}</p> 
-              <p>${place.websiteURI}</p> 
+              <a href="${place.websiteURI}">${place.websiteURI}</p> 
             </div>
             <div class="info_window_buttons">
               <a target=”_blank” href="https://www.google.com/maps/place/?q=place_id:${e.placeId}">Open in Google Maps</a>
@@ -99,7 +101,41 @@ async function init() {
     infowindow.addListener('close', () => {
       marker.setMap(null);
     });
+    google.maps.event.addListener(infowindow, 'domready', function() {
+      document.getElementById("add_to_trip_button").addEventListener('click', function addToTrip() {
+        const planList = document.getElementById('plan_list');
+        
+        const itemSeperator = document.createElement("div");
+        itemSeperator.classList.add("item_seperator");
+        const planItem = document.createElement("div");
+        planItem.classList.add("plan_item");
+        planItem.innerHTML = 
+        `
+        <h4>5:55 PM</h4>
+        <div class="plan_item_right">
+          <div class="plan_item_top">
+            <span>${place.displayName}</span>
+            <div class="item_buttons no_print">
+              <button><img src="/icons8-move-100.png" alt=""></button>
+              <button><img src="/icons8-edit-100.png" alt=""></button>
+              <button><img src="/icons8-delete-120.png" alt=""></button>
+            </div>
+          </div>
+          <h5 class="onlyPrint">${place.formattedAddress}</h5>
+          <p>Add a Note</p>
+        </div>`;
+      if (planList.hasChildNodes()) {
+        planList.append(itemSeperator);
+      }
+      planList.append(planItem);
+        console.log("added!");
+      });
+    });
+
+    
   });
+
+
 
   /*
     await customElements.whenDefined('gmp-map');
@@ -158,7 +194,6 @@ async function init() {
   }
 
 document.addEventListener('DOMContentLoaded', init);
-document.getElementById('add_to_trip_button').addEventListener('click', addToTrip);
 
 
   // Nearby Search
