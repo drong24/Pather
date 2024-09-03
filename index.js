@@ -1,30 +1,6 @@
-/* 
-function addToTrip() {
-  const planList = document.getElementById('plan_list');
-  const itemSeperator = "<div class='item_seperator'></div>";
-  const planItem = 
-  `<div class="plan_item">
-  <h4>5:55 PM</h4>
-  <div class="plan_item_right">
-    <div class="plan_item_top">
-      <span>${this.name}</span>
-      <div class="item_buttons no_print">
-        <button><img src="/icons8-move-100.png" alt=""></button>
-        <button><img src="/icons8-edit-100.png" alt=""></button>
-        <button><img src="/icons8-delete-120.png" alt=""></button>
-      </div>
-    </div>
-    <h5 class="onlyPrint">${this.address}</h5>
-    <p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and offered prepare how cordial two promise. </p>
-  </div>
-</div>
-`;
-  if (planList.hasChildNodes()) {
-    planList.append(itemSeperator);
-  }
-  planList.append(planItem);
-}
-*/
+
+const DateFormat = {year: 'numeric', month: 'long', day: 'numeric' };
+var itemId = 0;
 
 async function init() {
 
@@ -44,7 +20,7 @@ async function init() {
 
   // displays info window on icon click
   google.maps.event.addListener(map, 'click', async function(e) {
-    console.log(e.placeId);
+    if (e == null) return;
     e.stop();
     const place = new Place ({
       id: e.placeId,
@@ -109,16 +85,18 @@ async function init() {
         itemSeperator.classList.add("item_seperator");
         const planItem = document.createElement("div");
         planItem.classList.add("plan_item");
+        planItem.dataset.item_id = itemId;
+        itemId++;
         planItem.innerHTML = 
         `
-        <h4>5:55 PM</h4>
+        <h4 class="item_datetime"></h4>
         <div class="plan_item_right">
           <div class="plan_item_top">
             <span>${place.displayName}</span>
             <div class="item_buttons no_print">
               <button><img src="/icons8-move-100.png" alt=""></button>
               <button><img src="/icons8-edit-100.png" alt=""></button>
-              <button><img src="/icons8-delete-120.png" alt=""></button>
+              <button class="delete_item_button"><img src="/icons8-delete-120.png" alt=""></button>
             </div>
           </div>
           <h5 class="onlyPrint">${place.formattedAddress}</h5>
@@ -128,70 +106,32 @@ async function init() {
         planList.append(itemSeperator);
       }
       planList.append(planItem);
-        console.log("added!");
+      var delButtons = document.querySelectorAll(".delete_item_button");
+      var lastDelButton = delButtons[delButtons.length - 1];
+      lastDelButton.addEventListener('click', () => {
+        if (planItem.previousSibling) {
+          planItem.previousSibling.remove();
+        }
+        planItem.remove();
+        if (planList.hasChildNodes() && planList.firstChild.classList[0] == "item_seperator") {
+          planList.firstChild.remove();
+        }
+      });
       });
     });
-
-    
   });
-
-
-
-  /*
-    await customElements.whenDefined('gmp-map');
-  
-    const map = new google.maps.Map(
-      document.getElementById("map"), {
-        center: new google.maps.LatLng(37.4419, -122.1419),
-        zoom: 13,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      });
-    map.fitBounts
-    //const map = document.querySelector('gmp-map');
-    const marker = document.querySelector('gmp-advanced-marker');
-    const placePicker = document.querySelector('gmpx-place-picker');
-    const infowindow = new google.maps.InfoWindow();
-  
-    map.innerMap.setOptions({
-      mapTypeControl: false
-    });
-
-    google.maps.event.addListener(placePicker, "click", function(){
-      console.log("Map clicked");
-  });
-    placePicker.addEventListener('click', (e) => {
-      console.log(e);
-    });
-    /*
-    placePicker.addEventListener('gmpx-placechange', () => {
-      const place = placePicker.value;
-  
-      if (!place.location) {
-        window.alert(
-          "No details available for input: '" + place.name + "'"
-        );
-        infowindow.close();
-        marker.position = null;
-        return;
-      }
-  
-      if (place.viewport) {
-        map.innerMap.fitBounds(place.viewport);
-      } else {
-        map.center = place.location;
-        map.zoom = 17;
-      }
-  
-      marker.position = place.location;
-      infowindow.setContent(
-        `<strong>${place.displayName}</strong><br>
-         <span>${place.formattedAddress}</span> <br>
-         <span>${place.rating}</span>
-      `);
-      infowindow.open(map.innerMap, marker);
-    });
-    */
-  }
+}
+document.getElementById("print_button").addEventListener('click', () => {
+  window.print();
+  console.log("printed!");
+});
+document.getElementById("clear_button").addEventListener("click", () => {
+  const planList = document.getElementById('plan_list');
+  planList.innerHTML = '';
+});
+document.getElementById("email_button").addEventListener('click', () => {
+  console.log("emailed!");
+});
 
 document.addEventListener('DOMContentLoaded', init);
 

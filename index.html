@@ -4,10 +4,9 @@
     <title>Maps and Places Autocomplete</title>
     <script type="module" src="https://unpkg.com/@googlemaps/extended-component-library@0.6">
     </script>
-
     <script type="module" src="index.js"></script>
     <link rel="stylesheet" href="styles.css">
-    
+
   </head>
   <body>
     <div class="planner">
@@ -19,52 +18,20 @@
       </div>
       <div class="buttons">
         <div>
-          <button class="button_style_1">Add Item</button>
-          <button class="button_style_2">Clear Items</button>
+          <button id="clear_button" class="button_style_2">Clear Items</button>
         </div>
         <div class="output_buttons">
-          <button><img src="/icons8-email-100.png" alt="email button"></button>
-          <button><img src="/icons8-print-100.png" alt="print button"></button>
+          <button id="email_button"><img src="/icons8-email-100.png" alt="email button"></button>
+          <button id="print_button"><img src="/icons8-print-100.png" alt="print button"></button>
         </div>
       </div>
-      <div id="plan_list">
-        <h2 class="day">Friday, August 9th</h2>
-        <div class="plan_item">
-          <h4>5:55 PM</h4>
-          <div class="plan_item_right">
-            <div class="plan_item_top">
-              <span>Inari</span>
-              <div class="item_buttons no_print">
-                <button><img src="/icons8-move-100.png" alt=""></button>
-                <button><img src="/icons8-edit-100.png" alt=""></button>
-                <button><img src="/icons8-delete-120.png" alt=""></button>
-              </div>
-            </div>
-            <h5 class="onlyPrint">32442 Inari Road, Japan</h5>
-            <p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and offered prepare how cordial two promise. </p>
-          </div>
-        </div>
-      </div>
+      <div id="plan_list"></div>
     </div>
     <div id="map"></div>
     <script>
     (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
       ({key: "AIzaSyCvD4e8DS0mw-dLxh2AbXBAfduvaIHROrM", v: "weekly"});  
+
     </script>
-<!--
-      <gmpx-api-loader key="AIzaSyCvD4e8DS0mw-dLxh2AbXBAfduvaIHROrM" solution-channel="GMP_GE_mapsandplacesautocomplete_v1">
-    </gmpx-api-loader>
-    <gmp-map id="map" center="40.749933,-73.98633" zoom="13" map-id="DEMO_MAP_ID">
-      <div slot="control-block-start-inline-start" class="place-picker-container">
-        <gmpx-place-picker placeholder="Enter an address"></gmpx-place-picker>
-      </div>
-      <div slot="control-block-start-inline-start" class="icon-button-container">
-        <gmpx-icon-button icon="restaurant" variant="filled">Restraunts</gmpx-icon-button>
-        <gmpx-icon-button icon="hotel"variant="filled">Hotels</gmpx-icon-button>
-        <gmpx-icon-button icon="things_to_do" variant="filled">Things To Do</gmpx-icon-button>
-      </div>
-      <gmp-advanced-marker></gmp-advanced-marker>
-    </gmp-map>
--->
   </body>
 </html>
