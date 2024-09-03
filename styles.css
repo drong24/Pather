@@ -247,7 +247,7 @@ h1 > span {
   font-size: 14pt;
   font-weight: 900;
   background-color: inherit;
-  width: 84%;
+  flex: 1;
 }
 .item_note {
   border: none;

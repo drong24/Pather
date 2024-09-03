@@ -1,6 +1,5 @@
 
 const DateFormat = {year: 'numeric', month: 'long', day: 'numeric' };
-var itemId = 0;
 
 async function init() {
 
@@ -81,34 +80,60 @@ async function init() {
       document.getElementById("add_to_trip_button").addEventListener('click', function addToTrip() {
         const planList = document.getElementById('plan_list');
         
-        const itemSeperator = document.createElement("form");
+        const itemSeperator = document.createElement("div");
         itemSeperator.classList.add("item_seperator");
-        const planItem = document.createElement("div");
+        const planItem = document.createElement("form");
         planItem.classList.add("plan_item");
-        planItem.dataset.item_id = itemId;
-        itemId++;
+        planItem.draggable = true;
         planItem.innerHTML = 
-        `<form class="plan_item">
-          <div class="plan_datetime">
-            <input type="date" class="item_date" value="${new Date().toISOString().substring(0, 10)}">
-            <input type="time" class="item_time" value="${new Date().toISOString().substring(11, 16)}">
+        `<div class="plan_datetime">
+            <input readonly type="date" class="item_date" value="${new Date().toISOString().substring(0, 10)}">
+            <input readonly type="time" class="item_time" value="${new Date().toISOString().substring(11, 16)}">
           </div>
           <div class="plan_item_right">
             <div class="plan_item_top">
-              <input class="item_title" type="text" value="${place.displayName}">
+              <input readonly class="item_title" type="text" value="${place.displayName}">
               <div class="item_buttons no_print">
-                <button><img src="/icons8-move-100.png" alt=""></button>
-                <button class="delete_item_button"><img src="/icons8-delete-120.png" alt=""></button>
+                <button type="button"><img src="/icons8-move-100.png" alt=""></button>
+                <button type="button" class="edit_item_button"><img src="/icons8-edit-100.png" alt=""></button>
+                <button type="button" class="delete_item_button"><img src="/icons8-delete-120.png" alt=""></button>
               </div>
             </div>
             <p class="onlyPrint">${place.formattedAddress}</p>
-            <textarea name="note" class="item_note" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'>Add a Note.</textarea>
-          </div>
-        </form>`;
+            <textarea readonly name="note" class="item_note" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'>Add a Note.</textarea>
+          </div>`;
       if (planList.hasChildNodes()) {
         planList.append(itemSeperator);
       }
       planList.append(planItem);
+
+      //allows edits in item list
+      var editButtons = document.querySelectorAll(".edit_item_button");
+      console.log(editButtons);
+      var lastEditButton = editButtons[editButtons.length - 1];
+      lastEditButton.addEventListener('click', () => {
+        var itemDate = planItem.querySelector(".item_date");
+        var itemTime = planItem.querySelector(".item_time");
+        var itemTitle = planItem.querySelector(".item_title");
+        var itemNote = planItem.querySelector(".item_note");
+        if (itemTitle.readOnly == true) {
+          itemDate.readOnly = false;
+          itemTime.readOnly = false;
+          itemTitle.readOnly = false;
+          itemNote.readOnly = false;
+          itemTitle.style = "border: 1px solid black;"
+          itemNote.style = "border: 1px solid black";
+        }
+        else {
+          itemDate.readOnly = true;
+          itemTime.readOnly = true;
+          itemTitle.readOnly = true;
+          itemNote.readOnly = true;
+          itemTitle.style = "border: none"
+          itemNote.style = "border: nonee";
+        }
+        
+      });
 
       // remove item from item list when delete button is clicked
       var delButtons = document.querySelectorAll(".delete_item_button");
