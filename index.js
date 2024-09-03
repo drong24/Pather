@@ -81,31 +81,36 @@ async function init() {
       document.getElementById("add_to_trip_button").addEventListener('click', function addToTrip() {
         const planList = document.getElementById('plan_list');
         
-        const itemSeperator = document.createElement("div");
+        const itemSeperator = document.createElement("form");
         itemSeperator.classList.add("item_seperator");
         const planItem = document.createElement("div");
         planItem.classList.add("plan_item");
         planItem.dataset.item_id = itemId;
         itemId++;
         planItem.innerHTML = 
-        `
-        <h4 class="item_datetime"></h4>
-        <div class="plan_item_right">
-          <div class="plan_item_top">
-            <span>${place.displayName}</span>
-            <div class="item_buttons no_print">
-              <button><img src="/icons8-move-100.png" alt=""></button>
-              <button><img src="/icons8-edit-100.png" alt=""></button>
-              <button class="delete_item_button"><img src="/icons8-delete-120.png" alt=""></button>
-            </div>
+        `<form class="plan_item">
+          <div class="plan_datetime">
+            <input type="date" class="item_date" value="${new Date().toISOString().substring(0, 10)}">
+            <input type="time" class="item_time" value="${new Date().toISOString().substring(11, 16)}">
           </div>
-          <h5 class="onlyPrint">${place.formattedAddress}</h5>
-          <p>Add a Note</p>
-        </div>`;
+          <div class="plan_item_right">
+            <div class="plan_item_top">
+              <input class="item_title" type="text" value="${place.displayName}">
+              <div class="item_buttons no_print">
+                <button><img src="/icons8-move-100.png" alt=""></button>
+                <button class="delete_item_button"><img src="/icons8-delete-120.png" alt=""></button>
+              </div>
+            </div>
+            <p class="onlyPrint">${place.formattedAddress}</p>
+            <textarea name="note" class="item_note" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'>Add a Note.</textarea>
+          </div>
+        </form>`;
       if (planList.hasChildNodes()) {
         planList.append(itemSeperator);
       }
       planList.append(planItem);
+
+      // remove item from item list when delete button is clicked
       var delButtons = document.querySelectorAll(".delete_item_button");
       var lastDelButton = delButtons[delButtons.length - 1];
       lastDelButton.addEventListener('click', () => {
