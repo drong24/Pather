@@ -123,14 +123,17 @@ async function init() {
           itemNote.readOnly = false;
           itemTitle.style = "border: 1px solid black;"
           itemNote.style = "border: 1px solid black";
+          itemNote.style.height = itemNote.scrollHeight + "px";
+          
         }
         else {
           itemDate.readOnly = true;
           itemTime.readOnly = true;
           itemTitle.readOnly = true;
           itemNote.readOnly = true;
-          itemTitle.style = "border: none"
-          itemNote.style = "border: nonee";
+          itemTitle.style = "border: none;"
+          itemNote.style = "border: none;";
+          itemNote.style.height = itemNote.scrollHeight + "px";
         }
         
       });

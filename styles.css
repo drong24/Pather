@@ -243,6 +243,7 @@ h1 > span {
 }
 .item_title {
   border: none;
+  padding: 5px;
   outline: none;
   font-size: 14pt;
   font-weight: 900;
@@ -251,6 +252,7 @@ h1 > span {
 }
 .item_note {
   border: none;
+  padding: 5px;
   outline: none;
   background-color: inherit;
   width: 100%;
