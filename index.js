@@ -50,11 +50,14 @@ async function init() {
               <p>${place.formattedAddress}</p> 
               <p>Price: ${(place.priceLevel == null) ? "No price estimate" : place.priceLevel}</p> 
               <p>${(place.nationalPhoneNumber == null) ? "" : place.nationalPhoneNumber}</p> 
-              <a href="${place.websiteURI}">${place.websiteURI}</p> 
+              <a href="${place.websiteURI}">${place.websiteURI}</a> 
             </div>
             <div class="info_window_buttons">
-              <a target=”_blank” href="https://www.google.com/maps/place/?q=place_id:${e.placeId}">Open in Google Maps</a>
-              <button id="add_to_trip_button">Add to trip</button>
+              <input type="datetime-local">
+              <button id="add_to_trip_button">Add</button>
+              <a target=”_blank” href="https://www.google.com/maps/place/?q=place_id:${e.placeId}">
+                <img src="icons8-google-maps-96.png" alt="to google maps button">
+              </a>
             </div>
           </div>
         </div>
@@ -84,7 +87,7 @@ async function init() {
         itemSeperator.classList.add("item_seperator");
         const planItem = document.createElement("form");
         planItem.classList.add("plan_item");
-        planItem.draggable = true;
+        //planItem.draggable = true;
         planItem.innerHTML = 
         `<div class="plan_datetime">
             <input readonly type="date" class="item_date" value="${new Date().toISOString().substring(0, 10)}">

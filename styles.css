@@ -58,7 +58,7 @@ body {
 }
 .info_window_right div button {
   margin-left: 6px;
-  padding: 6px;
+  padding: 4px;
   border: none;
   border-radius: 10px;
   background-color: darkorange;
@@ -69,6 +69,16 @@ body {
   background-color: rgb(237, 131, 1);
   cursor: pointer;
 } 
+.info_window_buttons {
+  display: flex;
+  align-items: center;
+}
+.info_window_buttons > button {
+  margin-right: 4px;
+}
+.info_window_buttons > a > img {
+  max-height: 23px;
+}
 
 
 /* Item Planner Styling */
