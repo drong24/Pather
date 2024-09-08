@@ -53,7 +53,7 @@ async function init() {
               <a href="${place.websiteURI}">${place.websiteURI}</a> 
             </div>
             <div class="info_window_buttons">
-              <input type="datetime-local">
+              <input id="date_time" type="datetime-local" value="${toLocalISOString(new Date)}">
               <button id="add_to_trip_button">Add</button>
               <a target=”_blank” href="https://www.google.com/maps/place/?q=place_id:${e.placeId}">
                 <img src="icons8-google-maps-96.png" alt="to google maps button">
@@ -64,7 +64,6 @@ async function init() {
       </div>`,
       ariaLabel: `${place.displayName}`
     });
-
   marker = new AdvancedMarkerElement({
       position: place.location,
       map: map
@@ -79,10 +78,13 @@ async function init() {
     infowindow.addListener('close', () => {
       marker.setMap(null);
     });
+    // adds map item to list
     google.maps.event.addListener(infowindow, 'domready', function() {
       document.getElementById("add_to_trip_button").addEventListener('click', function addToTrip() {
         const planList = document.getElementById('plan_list');
+        //const planDateTime = document.getElementById;
         
+        // creates DOM element to insert
         const itemSeperator = document.createElement("div");
         itemSeperator.classList.add("item_seperator");
         const planItem = document.createElement("form");
@@ -105,10 +107,12 @@ async function init() {
             <p class="onlyPrint">${place.formattedAddress}</p>
             <textarea readonly name="note" class="item_note" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'>Add a Note.</textarea>
           </div>`;
+
+      // inserts into plan list
       if (planList.hasChildNodes()) {
         planList.append(itemSeperator);
       }
-      planList.append(planItem);
+      planList.insertBefore(planItem, );
 
       //allows edits in item list
       var editButtons = document.querySelectorAll(".edit_item_button");
@@ -157,6 +161,16 @@ async function init() {
     });
   });
 }
+
+function toLocalISOString(date) {
+  const localDate = new Date(date - date.getTimezoneOffset() * 60000);
+
+  // Optionally remove second/millisecond if needed
+  localDate.setSeconds(null);
+  localDate.setMilliseconds(null);
+  return localDate.toISOString().slice(0, 16).toUpperCase();
+}
+
 document.getElementById("print_button").addEventListener('click', () => {
   window.print();
   console.log("printed!");
