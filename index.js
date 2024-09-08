@@ -82,6 +82,7 @@ async function init() {
     google.maps.event.addListener(infowindow, 'domready', function() {
       document.getElementById("add_to_trip_button").addEventListener('click', function addToTrip() {
         const planList = document.getElementById('plan_list');
+        const itemDateTime = document.getElementById("date_time").value; 
         //const planDateTime = document.getElementById;
         
         // creates DOM element to insert
@@ -92,8 +93,8 @@ async function init() {
         //planItem.draggable = true;
         planItem.innerHTML = 
         `<div class="plan_datetime">
-            <input readonly type="date" class="item_date" value="${new Date().toISOString().substring(0, 10)}">
-            <input readonly type="time" class="item_time" value="${new Date().toISOString().substring(11, 16)}">
+            <input readonly type="date" class="item_date" value="${itemDateTime.substring(0, 10)}">
+            <input readonly type="time" class="item_time" value="${itemDateTime.substring(11)}">
           </div>
           <div class="plan_item_right">
             <div class="plan_item_top">
@@ -112,7 +113,7 @@ async function init() {
       if (planList.hasChildNodes()) {
         planList.append(itemSeperator);
       }
-      planList.insertBefore(planItem, );
+      planList.append(planItem);
 
       //allows edits in item list
       var editButtons = document.querySelectorAll(".edit_item_button");
