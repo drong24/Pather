@@ -82,6 +82,7 @@ async function init() {
     google.maps.event.addListener(infowindow, 'domready', function() {
       document.getElementById("add_to_trip_button").addEventListener('click', function addToTrip() {
         const planList = document.getElementById('plan_list');
+        const planItems = document.querySelectorAll(".plan_item");
         const itemDateTime = document.getElementById("date_time").value; 
         //const planDateTime = document.getElementById;
         
@@ -108,16 +109,24 @@ async function init() {
             <p class="onlyPrint">${place.formattedAddress}</p>
             <textarea readonly name="note" class="item_note" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'>Add a Note.</textarea>
           </div>`;
+      var addedListPosition = getListPosition(itemDateTime);
 
-      // inserts into plan list
-      if (planList.hasChildNodes()) {
-        planList.append(itemSeperator);
+      // inserts into plan list     
+      if (planList.children.length == 0) {
+        planList.append(planItem);
       }
-      planList.append(planItem);
+      else if (addedListPosition == planItems.length) {
+        planList.insertBefore(itemSeperator, planItems[addedListPosition]);
+        planList.insertBefore(planItem, planItems[addedListPosition]);
+        console.log("last?????")
+      }
+      else {
+        planList.insertBefore(planItem, planItems[addedListPosition]);
+        planList.insertBefore(itemSeperator, planItems[addedListPosition]);
+      }
 
       //allows edits in item list
       var editButtons = document.querySelectorAll(".edit_item_button");
-      console.log(editButtons);
       var lastEditButton = editButtons[editButtons.length - 1];
       lastEditButton.addEventListener('click', () => {
         var itemDate = planItem.querySelector(".item_date");
@@ -170,6 +179,23 @@ function toLocalISOString(date) {
   localDate.setSeconds(null);
   localDate.setMilliseconds(null);
   return localDate.toISOString().slice(0, 16).toUpperCase();
+}
+
+function getListPosition(dateTime) {
+  const planItems = document.querySelectorAll(".plan_item");
+  const addedDateTime = new Date(dateTime);
+
+  var i = 0;
+  while (i < planItems.length) {
+    var currDate = planItems[i].querySelector(".item_date").value;
+    var currTime = planItems[i].querySelector(".item_time").value;
+    var currDateTime = new Date(currDate + "T" + currTime);
+    if (currDateTime >= addedDateTime) {
+      return i;
+    }
+    i++;
+  } 
+  return i;
 }
 
 document.getElementById("print_button").addEventListener('click', () => {
