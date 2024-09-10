@@ -84,13 +84,10 @@ async function init() {
         const planList = document.getElementById('plan_list');
         const planItems = document.querySelectorAll(".plan_item");
         const itemDateTime = document.getElementById("date_time").value; 
-        //const planDateTime = document.getElementById;
         
         // creates DOM element to insert
-        const itemSeperator = document.createElement("div");
-        itemSeperator.classList.add("item_seperator");
         const planItem = document.createElement("form");
-        planItem.classList.add("plan_item");
+        planItem.classList.add("plan_item", "added");
         //planItem.draggable = true;
         planItem.innerHTML = 
         `<div class="plan_datetime">
@@ -101,7 +98,6 @@ async function init() {
             <div class="plan_item_top">
               <input readonly class="item_title" type="text" value="${place.displayName}">
               <div class="item_buttons no_print">
-                <button type="button"><img src="/icons8-move-100.png" alt=""></button>
                 <button type="button" class="edit_item_button"><img src="/icons8-edit-100.png" alt=""></button>
                 <button type="button" class="delete_item_button"><img src="/icons8-delete-120.png" alt=""></button>
               </div>
@@ -110,29 +106,16 @@ async function init() {
             <textarea readonly name="note" class="item_note" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'>Add a Note.</textarea>
           </div>`;
       var addedListPosition = getListPosition(itemDateTime);
-
-      // inserts into plan list     
-      if (planList.children.length == 0) {
-        planList.append(planItem);
-      }
-      else if (addedListPosition == planItems.length) {
-        planList.insertBefore(itemSeperator, planItems[addedListPosition]);
-        planList.insertBefore(planItem, planItems[addedListPosition]);
-        console.log("last?????")
-      }
-      else {
-        planList.insertBefore(planItem, planItems[addedListPosition]);
-        planList.insertBefore(itemSeperator, planItems[addedListPosition]);
-      }
+      instertItem(planItem, addedListPosition);
 
       //allows edits in item list
-      var editButtons = document.querySelectorAll(".edit_item_button");
-      var lastEditButton = editButtons[editButtons.length - 1];
-      lastEditButton.addEventListener('click', () => {
+      var editButton = document.querySelector(".added .edit_item_button");
+      editButton.addEventListener('click', () => {
         var itemDate = planItem.querySelector(".item_date");
         var itemTime = planItem.querySelector(".item_time");
         var itemTitle = planItem.querySelector(".item_title");
         var itemNote = planItem.querySelector(".item_note");
+
         if (itemTitle.readOnly == true) {
           itemDate.readOnly = false;
           itemTime.readOnly = false;
@@ -151,22 +134,18 @@ async function init() {
           itemTitle.style = "border: none;"
           itemNote.style = "border: none;";
           itemNote.style.height = itemNote.scrollHeight + "px";
+          editPlanListSeq(planItem, new Date(`${itemDate.value}T${itemTime.value}`));
         }
         
       });
 
       // remove item from item list when delete button is clicked
-      var delButtons = document.querySelectorAll(".delete_item_button");
-      var lastDelButton = delButtons[delButtons.length - 1];
-      lastDelButton.addEventListener('click', () => {
-        if (planItem.previousSibling) {
-          planItem.previousSibling.remove();
-        }
-        planItem.remove();
-        if (planList.hasChildNodes() && planList.firstChild.classList[0] == "item_seperator") {
-          planList.firstChild.remove();
-        }
+      var delButton = document.querySelector(".added .delete_item_button");
+      console.log(delButton);
+      delButton.addEventListener('click', () => {
+        removeItem(planItem);
       });
+      document.querySelector(".added").classList.remove("added");
       });
     });
   });
@@ -196,6 +175,47 @@ function getListPosition(dateTime) {
     i++;
   } 
   return i;
+}
+
+// inserts into plan list   
+function instertItem(planItem, pos) {  
+  const planList = document.getElementById('plan_list');
+  const planItems = document.querySelectorAll(".plan_item");
+
+  const itemSeperator = document.createElement("div");
+  itemSeperator.classList.add("item_seperator");
+
+  if (planList.children.length == 0) {
+    planList.append(planItem);
+  }
+  else if (pos == planItems.length) {
+    planList.insertBefore(itemSeperator, planItems[pos]);
+    planList.insertBefore(planItem, planItems[pos]);
+  }
+  else {
+    planList.insertBefore(planItem, planItems[pos]);
+    planList.insertBefore(itemSeperator, planItems[pos]);
+  }
+}
+
+function removeItem(planItem) {
+  const planList = document.getElementById('plan_list');
+  if (planItem.previousSibling) {
+    planItem.previousSibling.remove();
+  }
+  planItem.remove();
+  if (planList.hasChildNodes() && planList.firstChild.classList[0] == "item_seperator") {
+    planList.firstChild.remove();
+  }
+}
+
+function editPlanListSeq(editedItem, dateTime) {
+  const planList = document.getElementById('plan_list');
+  const planItems = document.querySelectorAll(".plan_item");
+
+  var pos = getListPosition(dateTime);
+  removeItem(editedItem);
+  instertItem(editedItem, pos);
 }
 
 document.getElementById("print_button").addEventListener('click', () => {
