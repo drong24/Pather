@@ -3,6 +3,7 @@ const DateFormat = {year: 'numeric', month: 'long', day: 'numeric' };
 let map;
 let infowindow;
 let marker;
+let place;
 
 async function init() {
 
@@ -47,13 +48,17 @@ async function init() {
   const placeAutocomplete = new google.maps.places.PlaceAutocompleteElement();
   mapDiv.appendChild(placeAutocomplete);
   placeAutocomplete.id = "place-autocomplete-input";
+
   // opens info window for selected place
-  placeAutocomplete.addEventListener("gmp-placeselect", async ({ place }) => {
+  placeAutocomplete.addEventListener("gmp-placeselect", async function(e) {
+    place = new Place ({
+      id: e.place.id,
+      requestedLanguage: "en"
+    });
     await place.fetchFields({
       fields: ["location", "displayName", "formattedAddress", "rating", "userRatingCount", "reviews", 
       "priceLevel", "photos", "websiteURI", "nationalPhoneNumber", "regularOpeningHours"],
     });
-    console.log(place.id);
      // If the place has a geometry, then present it on a map.
     if (place.viewport) {
       map.fitBounds(place.viewport);
@@ -94,10 +99,9 @@ async function init() {
 
   // displays info window on icon click
   google.maps.event.addListener(map, 'click', async function(e) {
-    console.log(e);
     if (e == null) return;
     e.stop();
-    const place = new Place ({
+    place = new Place ({
       id: e.placeId,
       requestedLanguage: "en"
     });
@@ -111,35 +115,33 @@ async function init() {
     if (infowindow != null) {
       infowindow.close();
     }
-
-   infowindow = new google.maps.InfoWindow({
-      content: 
-      `<div class="info_window">
-        <div class="info_window_info">
-          <div class="info_window_left">          
-            <img src="${place.photos[0].getURI({maxHeight: 120})}">
-          </div>
-          <div class="info_window_right">
-            <div class="info_window_content">
-              <h3>${place.displayName}</h3>
-              <p>${place.rating} (${place.userRatingCount})</p>
-              <p>${place.formattedAddress}</p> 
-              <p>Price: ${(place.priceLevel == null) ? "No price estimate" : place.priceLevel}</p> 
-              <p>${(place.nationalPhoneNumber == null) ? "" : place.nationalPhoneNumber}</p> 
-              <a href="${place.websiteURI}">${place.websiteURI}</a> 
-            </div>
-            <div class="info_window_buttons">
-              <input id="date_time" type="datetime-local" value="${toLocalISOString(new Date)}">
-              <button id="add_to_trip_button">Add</button>
-              <a target=”_blank” href="https://www.google.com/maps/place/?q=place_id:${e.placeId}">
-                <img src="icons8-google-maps-96.png" alt="to google maps button">
-              </a>
-            </div>
-          </div>
+    let content = 
+    `<div class="info_window">
+    <div class="info_window_info">
+      <div class="info_window_left">          
+        <img src="${place.photos[0].getURI({maxHeight: 120})}">
+      </div>
+      <div class="info_window_right">
+        <div class="info_window_content">
+          <h3>${place.displayName}</h3>
+          <p>${place.rating} (${place.userRatingCount})</p>
+          <p>${place.formattedAddress}</p> 
+          <p>Price: ${(place.priceLevel == null) ? "No price estimate" : place.priceLevel}</p> 
+          <p>${(place.nationalPhoneNumber == null) ? "" : place.nationalPhoneNumber}</p> 
+          <a href="${place.websiteURI}">${place.websiteURI}</a> 
         </div>
-      </div>`,
-      ariaLabel: `${place.displayName}`
-    });
+        <div class="info_window_buttons">
+          <input id="date_time" type="datetime-local" value="${toLocalISOString(new Date)}">
+          <button id="add_to_trip_button">Add</button>
+          <a target=”_blank” href="https://www.google.com/maps/place/?q=place_id:${e.placeId}">
+            <img src="icons8-google-maps-96.png" alt="to google maps button">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  updateInfoWindow(content, place.location);
   marker = new AdvancedMarkerElement({
       position: place.location,
       map: map
@@ -154,78 +156,80 @@ async function init() {
     infowindow.addListener('close', () => {
       marker.setMap(null);
     });
-    // adds map item to list
-    google.maps.event.addListener(infowindow, 'domready', function() {
-      document.getElementById("add_to_trip_button").addEventListener('click', function addToTrip() {
-        const planList = document.getElementById('plan_list');
-        const planItems = document.querySelectorAll(".plan_item");
-        const itemDateTime = document.getElementById("date_time").value; 
-        
-        // creates DOM element to insert
-        const planItem = document.createElement("form");
-        planItem.classList.add("plan_item", "added");
-        //planItem.draggable = true;
-        planItem.innerHTML = 
-        `<div class="plan_datetime">
-            <input readonly type="date" class="item_date" value="${itemDateTime.substring(0, 10)}">
-            <input readonly type="time" class="item_time" value="${itemDateTime.substring(11)}">
-          </div>
-          <div class="plan_item_right">
-            <div class="plan_item_top">
-              <input readonly class="item_title" type="text" value="${place.displayName}">
-              <div class="item_buttons no_print">
-                <button type="button" class="edit_item_button"><img src="/icons8-edit-100.png" alt=""></button>
-                <button type="button" class="delete_item_button"><img src="/icons8-delete-120.png" alt=""></button>
-              </div>
+  });
+
+  // adds plan item to list
+  google.maps.event.addListener(infowindow, 'domready', function() {
+    document.getElementById("add_to_trip_button").addEventListener('click', function addToTrip() {
+      console.log("here");
+      const itemDateTime = document.getElementById("date_time").value; 
+      
+      // creates DOM element to insert
+      const planItem = document.createElement("form");
+      planItem.classList.add("plan_item", "added");
+      //planItem.draggable = true;
+      planItem.innerHTML = 
+      `<div class="plan_datetime">
+          <input readonly type="date" class="item_date" value="${itemDateTime.substring(0, 10)}">
+          <input readonly type="time" class="item_time" value="${itemDateTime.substring(11)}">
+        </div>
+        <div class="plan_item_right">
+          <div class="plan_item_top">
+            <input readonly class="item_title" type="text" value="${place.displayName}">
+            <div class="item_buttons no_print">
+              <button type="button" class="edit_item_button"><img src="/icons8-edit-100.png" alt=""></button>
+              <button type="button" class="delete_item_button"><img src="/icons8-delete-120.png" alt=""></button>
             </div>
-            <p class="onlyPrint">${place.formattedAddress}</p>
-            <textarea readonly name="note" class="item_note" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'>Add a Note.</textarea>
-          </div>`;
-      var addedListPosition = getListPosition(itemDateTime);
-      instertItem(planItem, addedListPosition);
+          </div>
+          <p class="onlyPrint">${place.formattedAddress}</p>
+          <textarea readonly name="note" class="item_note" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'>Add a Note.</textarea>
+        </div>`;
+    var addedListPosition = getListPosition(itemDateTime);
+    instertItem(planItem, addedListPosition);
 
-      //allows edits in item list
-      var editButton = document.querySelector(".added .edit_item_button");
-      editButton.addEventListener('click', () => {
-        var itemDate = planItem.querySelector(".item_date");
-        var itemTime = planItem.querySelector(".item_time");
-        var itemTitle = planItem.querySelector(".item_title");
-        var itemNote = planItem.querySelector(".item_note");
+    //allows edits in item list
+    var editButton = document.querySelector(".added .edit_item_button");
+    editButton.addEventListener('click', () => {
+      var itemDate = planItem.querySelector(".item_date");
+      var itemTime = planItem.querySelector(".item_time");
+      var itemTitle = planItem.querySelector(".item_title");
+      var itemNote = planItem.querySelector(".item_note");
 
-        if (itemTitle.readOnly == true) {
-          itemDate.readOnly = false;
-          itemTime.readOnly = false;
-          itemTitle.readOnly = false;
-          itemNote.readOnly = false;
-          itemTitle.style = "border: 1px solid black;"
-          itemNote.style = "border: 1px solid black";
-          itemNote.style.height = itemNote.scrollHeight + "px";
-          
-        }
-        else {
-          itemDate.readOnly = true;
-          itemTime.readOnly = true;
-          itemTitle.readOnly = true;
-          itemNote.readOnly = true;
-          itemTitle.style = "border: none;"
-          itemNote.style = "border: none;";
-          itemNote.style.height = itemNote.scrollHeight + "px";
-          editPlanListSeq(planItem, new Date(`${itemDate.value}T${itemTime.value}`));
-        }
+      if (itemTitle.readOnly == true) {
+        itemDate.readOnly = false;
+        itemTime.readOnly = false;
+        itemTitle.readOnly = false;
+        itemNote.readOnly = false;
+        itemTitle.style = "border: 1px solid black;"
+        itemNote.style = "border: 1px solid black";
+        itemNote.style.height = itemNote.scrollHeight + "px";
         
-      });
+      }
+      else {
+        itemDate.readOnly = true;
+        itemTime.readOnly = true;
+        itemTitle.readOnly = true;
+        itemNote.readOnly = true;
+        itemTitle.style = "border: none;"
+        itemNote.style = "border: none;";
+        itemNote.style.height = itemNote.scrollHeight + "px";
+        editPlanListSeq(planItem, new Date(`${itemDate.value}T${itemTime.value}`));
+      }
+      
+    });
 
-      // remove item from item list when delete button is clicked
-      var delButton = document.querySelector(".added .delete_item_button");
-      console.log(delButton);
-      delButton.addEventListener('click', () => {
-        removeItem(planItem);
-      });
-      document.querySelector(".added").classList.remove("added");
-      infowindow.close();
-      });
+    // remove item from item list when delete button is clicked
+    var delButton = document.querySelector(".added .delete_item_button");
+    delButton.addEventListener('click', () => {
+      removeItem(planItem);
+    });
+    document.querySelector(".added").classList.remove("added");
+    infowindow.close();
     });
   });
+}
+
+function addInfoWindowListener() {
 }
 
 function updateInfoWindow(content, center) {
