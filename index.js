@@ -47,7 +47,29 @@ async function init() {
   // creates map seach bar
   const placeAutocomplete = new google.maps.places.PlaceAutocompleteElement();
   mapDiv.appendChild(placeAutocomplete);
-  placeAutocomplete.id = "place-autocomplete-input";
+
+  // adds buttons for nearby search
+  var nearbyButtons = document.createElement("div");
+  nearbyButtons.classList.add("nearby_button_list");
+
+  var hotelButton = createNeabySearchButton("Hotels");
+  var restaurantButton = createNeabySearchButton("Restaurants");
+  var cafeButton = createNeabySearchButton("Cafes");
+  var attractionButton = createNeabySearchButton("Attractions");
+
+  nearbyButtons.appendChild(hotelButton);
+  nearbyButtons.appendChild(restaurantButton);
+  nearbyButtons.appendChild(cafeButton);
+  nearbyButtons.appendChild(attractionButton);
+  mapDiv.appendChild(nearbyButtons);
+
+  var nearbyButtonsChildren = document.querySelectorAll(".search_button"); 
+  console.log(nearbyButtonsChildren);
+  nearbyButtonsChildren.forEach(button => {
+    button.addEventListener("click", () => {
+      console.log(button.innerHTML);
+    });
+  });
 
   // opens info window for selected place
   placeAutocomplete.addEventListener("gmp-placeselect", async function(e) {
@@ -229,9 +251,13 @@ async function init() {
   });
 }
 
-function addInfoWindowListener() {
-}
+function createNeabySearchButton(name) {
+  const controlButton = document.createElement("button");
+  controlButton.textContent = name;
+  controlButton.classList.add("search_button");
 
+  return controlButton;
+}
 function updateInfoWindow(content, center) {
   infowindow.setContent(content);
   infowindow.setPosition(center);

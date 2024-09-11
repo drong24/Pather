@@ -85,6 +85,25 @@ gmp-place-autocomplete {
   margin: 15px;
   max-width: 300px;
 }
+.input-container > input {
+  padding: 7px;
+  border-radius: 10px;
+}
+
+/* Nearby Seach Buttons */
+.nearby_button_list {
+  position: absolute;
+  margin-left: 50px;
+}
+.search_button {
+  padding: 5px;
+  border-radius: 7px;
+  border: 1px solid grey;
+  margin-right: 10px;
+}
+.search_button:hover {
+  background-color: darkgray;
+}
 
 /* Item Planner Styling */
 * {
