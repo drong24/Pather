@@ -17,8 +17,28 @@ async function init() {
     mapId: "b59f8219183c11de"
   });
 
+  const request = {
+    textQuery: "Tacos in Mountain View",
+    fields: ["displayName", "location", "businessStatus"],
+    includedType: "restaurant",
+    locationBias: { lat: 37.4161493, lng: -122.0812166 },
+    isOpenNow: true,
+    language: "en-US",
+    maxResultCount: 8,
+    minRating: 3.2,
+    region: "us",
+    useStrictTypeFiltering: false,
+  };
+  //@ts-ignore
+  const { places } = await Place.searchByText(request);
+  console.log(places);
+
+  const placeAutocomplete = new google.maps.places.PlaceAutocompleteElement();
+  mapDiv.appendChild(placeAutocomplete);
+
   // displays info window on icon click
   google.maps.event.addListener(map, 'click', async function(e) {
+    console.log(e);
     if (e == null) return;
     e.stop();
     const place = new Place ({
@@ -146,6 +166,7 @@ async function init() {
         removeItem(planItem);
       });
       document.querySelector(".added").classList.remove("added");
+      infowindow.close();
       });
     });
   });
