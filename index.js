@@ -1,23 +1,33 @@
 
 const DateFormat = {year: 'numeric', month: 'long', day: 'numeric' };
+let map;
+let infowindow;
+let marker;
 
 async function init() {
 
   const { Map } = await google.maps.importLibrary("maps");
   const { Place } = await google.maps.importLibrary("places");
   const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
-  let infowindow = null;
-  let marker = null;
 
   // create map
   const mapDiv = document.getElementById("map");
-  const map = new google.maps.Map(mapDiv, {
+  map = new google.maps.Map(mapDiv, {
     zoom: 15,
     center: new google.maps.LatLng(37.4419, -122.1419),
+    disableDefaultUI: true,
+    zoomControl: true,
+    streetViewControl: true,
+    fullscreenControl: true,
     mapId: "b59f8219183c11de"
   });
 
-  const request = {
+  infowindow = new google.maps.InfoWindow({});
+  marker = new google.maps.marker.AdvancedMarkerElement({
+    map,
+  });
+
+/*   const request = {
     textQuery: "Tacos in Mountain View",
     fields: ["displayName", "location", "businessStatus"],
     includedType: "restaurant",
@@ -31,10 +41,56 @@ async function init() {
   };
   //@ts-ignore
   const { places } = await Place.searchByText(request);
-  console.log(places);
+  console.log(places); */
 
+  // creates map seach bar
   const placeAutocomplete = new google.maps.places.PlaceAutocompleteElement();
   mapDiv.appendChild(placeAutocomplete);
+  placeAutocomplete.id = "place-autocomplete-input";
+  // opens info window for selected place
+  placeAutocomplete.addEventListener("gmp-placeselect", async ({ place }) => {
+    await place.fetchFields({
+      fields: ["location", "displayName", "formattedAddress", "rating", "userRatingCount", "reviews", 
+      "priceLevel", "photos", "websiteURI", "nationalPhoneNumber", "regularOpeningHours"],
+    });
+    console.log(place.id);
+     // If the place has a geometry, then present it on a map.
+    if (place.viewport) {
+      map.fitBounds(place.viewport);
+    } else {
+      map.setCenter(place.location);
+      map.setZoom(17);
+    }
+
+    let content =
+    `<div class="info_window">
+    <div class="info_window_info">
+      <div class="info_window_left">          
+        <img src="${place.photos[0].getURI({maxHeight: 120})}">
+      </div>
+      <div class="info_window_right">
+        <div class="info_window_content">
+          <h3>${place.displayName}</h3>
+          <p>${place.rating} (${place.userRatingCount})</p>
+          <p>${place.formattedAddress}</p> 
+          <p>Price: ${(place.priceLevel == null) ? "No price estimate" : place.priceLevel}</p> 
+          <p>${(place.nationalPhoneNumber == null) ? "" : place.nationalPhoneNumber}</p> 
+          <a href="${place.websiteURI}">${place.websiteURI}</a> 
+        </div>
+        <div class="info_window_buttons">
+          <input id="date_time" type="datetime-local" value="${toLocalISOString(new Date)}">
+          <button id="add_to_trip_button">Add</button>
+          <a target=”_blank” href="https://www.google.com/maps/place/?q=place_id:${place.id}">
+            <img src="icons8-google-maps-96.png" alt="to google maps button">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+    updateInfoWindow(content, place.location);
+    marker.position = place.location;
+  }); 
 
   // displays info window on icon click
   google.maps.event.addListener(map, 'click', async function(e) {
@@ -169,6 +225,16 @@ async function init() {
       infowindow.close();
       });
     });
+  });
+}
+
+function updateInfoWindow(content, center) {
+  infowindow.setContent(content);
+  infowindow.setPosition(center);
+  infowindow.open({
+    map,
+    anchor: marker,
+    shouldFocus: false,
   });
 }
 

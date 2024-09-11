@@ -81,15 +81,9 @@ body {
 }
 
 /* Place Autocomplete Styling */
-#place-autocomplete-card {
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  margin: 10px;
-  padding: 5px;
-  font-family: Roboto, sans-serif;
-  font-size: large;
-  font-weight: bold;
+gmp-place-autocomplete {
+  margin: 15px;
+  max-width: 300px;
 }
 
 /* Item Planner Styling */
