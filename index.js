@@ -160,10 +160,10 @@ function toLocalISOString(date) {
   return localDate.toISOString().slice(0, 16).toUpperCase();
 }
 
+// returns the position an added plan should be in the plan list 
 function getListPosition(dateTime) {
   const planItems = document.querySelectorAll(".plan_item");
   const addedDateTime = new Date(dateTime);
-
   var i = 0;
   while (i < planItems.length) {
     var currDate = planItems[i].querySelector(".item_date").value;
@@ -198,6 +198,7 @@ function instertItem(planItem, pos) {
   }
 }
 
+// removes plan from plan list
 function removeItem(planItem) {
   const planList = document.getElementById('plan_list');
   if (planItem.previousSibling) {
@@ -209,12 +210,12 @@ function removeItem(planItem) {
   }
 }
 
+// changes plan list sequence based on new date and time
 function editPlanListSeq(editedItem, dateTime) {
   const planList = document.getElementById('plan_list');
   const planItems = document.querySelectorAll(".plan_item");
-
-  var pos = getListPosition(dateTime);
   removeItem(editedItem);
+  var pos = getListPosition(dateTime);
   instertItem(editedItem, pos);
 }
 
