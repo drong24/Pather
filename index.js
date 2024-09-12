@@ -25,8 +25,15 @@ async function init() {
 
   infowindow = new google.maps.InfoWindow({});
   marker = new google.maps.marker.AdvancedMarkerElement({
-    map,
+    map
   });
+  google.maps.event.addListener(marker, 'click', function() {  
+    // this = marker
+    var marker_map = this.getMap();
+    this.info.open(marker_map);
+    // this.info.open(marker_map, this);
+    // Note: If you call open() without passing a marker, the InfoWindow will use the position specified upon construction through the InfoWindowOptions object literal.
+});
 
 /*   const request = {
     textQuery: "Tacos in Mountain View",
@@ -90,12 +97,11 @@ async function init() {
     
         // Loop through and get all the results.
         places.forEach((place) => {
-          const markerView = new AdvancedMarkerElement({
+          marker = new AdvancedMarkerElement({
             map,
             position: place.location,
             title: place.displayName,
           });
-    
           bounds.extend(place.location);
           console.log(place);
         });
