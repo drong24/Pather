@@ -52,10 +52,10 @@ async function init() {
   var nearbyButtons = document.createElement("div");
   nearbyButtons.classList.add("nearby_button_list");
 
-  var hotelButton = createNeabySearchButton("Hotels");
-  var restaurantButton = createNeabySearchButton("Restaurants");
-  var cafeButton = createNeabySearchButton("Cafes");
-  var attractionButton = createNeabySearchButton("Attractions");
+  var hotelButton = createNeabySearchButton("Hotels", "lodging");
+  var restaurantButton = createNeabySearchButton("Restaurants", "restaurant");
+  var cafeButton = createNeabySearchButton("Cafes", "cafe");
+  var attractionButton = createNeabySearchButton("Atm", "atm");
 
   nearbyButtons.appendChild(hotelButton);
   nearbyButtons.appendChild(restaurantButton);
@@ -66,8 +66,43 @@ async function init() {
   var nearbyButtonsChildren = document.querySelectorAll(".search_button"); 
   console.log(nearbyButtonsChildren);
   nearbyButtonsChildren.forEach(button => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
       console.log(button.innerHTML);
+      console.log(map.center.lat());
+      const request = {
+        fields: ["displayName", "location", "businessStatus"],
+        includedPrimaryTypes: [button.value],
+        locationRestriction: {
+          center: { lat: map.center.lat(), lng: map.center.lng() },
+          radius: 1000,
+        },
+        maxResultCount: 8,
+        language: "en-US",
+      };
+      const { places } = await Place.searchNearby(request);
+
+      // displays found places
+      if (places.length) {
+        console.log(places);
+    
+        const { LatLngBounds } = await google.maps.importLibrary("core");
+        const bounds = new LatLngBounds();
+    
+        // Loop through and get all the results.
+        places.forEach((place) => {
+          const markerView = new AdvancedMarkerElement({
+            map,
+            position: place.location,
+            title: place.displayName,
+          });
+    
+          bounds.extend(place.location);
+          console.log(place);
+        });
+        map.fitBounds(bounds);
+      } else {
+        console.log("No results");
+      }
     });
   });
 
@@ -251,9 +286,10 @@ async function init() {
   });
 }
 
-function createNeabySearchButton(name) {
+function createNeabySearchButton(name, type) {
   const controlButton = document.createElement("button");
   controlButton.textContent = name;
+  controlButton.value = type;
   controlButton.classList.add("search_button");
 
   return controlButton;
