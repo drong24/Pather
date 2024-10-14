@@ -27,29 +27,11 @@ async function init() {
   marker = new google.maps.marker.AdvancedMarkerElement({
     map
   });
+
   google.maps.event.addListener(marker, 'click', function() {  
-    // this = marker
     var marker_map = this.getMap();
     this.info.open(marker_map);
-    // this.info.open(marker_map, this);
-    // Note: If you call open() without passing a marker, the InfoWindow will use the position specified upon construction through the InfoWindowOptions object literal.
 });
-
-/*   const request = {
-    textQuery: "Tacos in Mountain View",
-    fields: ["displayName", "location", "businessStatus"],
-    includedType: "restaurant",
-    locationBias: { lat: 37.4161493, lng: -122.0812166 },
-    isOpenNow: true,
-    language: "en-US",
-    maxResultCount: 8,
-    minRating: 3.2,
-    region: "us",
-    useStrictTypeFiltering: false,
-  };
-  //@ts-ignore
-  const { places } = await Place.searchByText(request);
-  console.log(places); */
 
   // creates map seach bar
   const placeAutocomplete = new google.maps.places.PlaceAutocompleteElement();
@@ -250,35 +232,10 @@ async function init() {
     var addedListPosition = getListPosition(itemDateTime);
     instertItem(planItem, addedListPosition);
 
-    //allows edits in item list
+    // toggles readonly on edit button click
     var editButton = document.querySelector(".added .edit_item_button");
     editButton.addEventListener('click', () => {
-      var itemDate = planItem.querySelector(".item_date");
-      var itemTime = planItem.querySelector(".item_time");
-      var itemTitle = planItem.querySelector(".item_title");
-      var itemNote = planItem.querySelector(".item_note");
-
-      if (itemTitle.readOnly == true) {
-        itemDate.readOnly = false;
-        itemTime.readOnly = false;
-        itemTitle.readOnly = false;
-        itemNote.readOnly = false;
-        itemTitle.style = "border: 1px solid black;"
-        itemNote.style = "border: 1px solid black";
-        itemNote.style.height = itemNote.scrollHeight + "px";
-        
-      }
-      else {
-        itemDate.readOnly = true;
-        itemTime.readOnly = true;
-        itemTitle.readOnly = true;
-        itemNote.readOnly = true;
-        itemTitle.style = "border: none;"
-        itemNote.style = "border: none;";
-        itemNote.style.height = itemNote.scrollHeight + "px";
-        editPlanListSeq(planItem, new Date(`${itemDate.value}T${itemTime.value}`));
-      }
-      
+      editPlannerItem(planItem);
     });
 
     // remove item from item list when delete button is clicked
@@ -290,6 +247,35 @@ async function init() {
     infowindow.close();
     });
   });
+}
+
+// allows user to edit in planner list and organizes list based on datetime
+function editPlannerItem(planItem) {
+  var itemDate = planItem.querySelector(".item_date");
+  var itemTime = planItem.querySelector(".item_time");
+  var itemTitle = planItem.querySelector(".item_title");
+  var itemNote = planItem.querySelector(".item_note");
+
+  if (itemTitle.readOnly == true) {
+    itemDate.readOnly = false;
+    itemTime.readOnly = false;
+    itemTitle.readOnly = false;
+    itemNote.readOnly = false;
+    itemTitle.style = "border: 1px solid black;"
+    itemNote.style = "border: 1px solid black";
+    itemNote.style.height = itemNote.scrollHeight + "px";
+    
+  }
+  else {
+    itemDate.readOnly = true;
+    itemTime.readOnly = true;
+    itemTitle.readOnly = true;
+    itemNote.readOnly = true;
+    itemTitle.style = "border: none;"
+    itemNote.style = "border: none;";
+    itemNote.style.height = itemNote.scrollHeight + "px";
+    editPlanListSeq(planItem, new Date(`${itemDate.value}T${itemTime.value}`));
+  }
 }
 
 function createNeabySearchButton(name, type) {
@@ -310,10 +296,11 @@ function updateInfoWindow(content, center) {
   });
 }
 
+// used to convert date to ISO formated string
 function toLocalISOString(date) {
   const localDate = new Date(date - date.getTimezoneOffset() * 60000);
 
-  // Optionally remove second/millisecond if needed
+  // remove second/millisecond
   localDate.setSeconds(null);
   localDate.setMilliseconds(null);
   return localDate.toISOString().slice(0, 16).toUpperCase();
@@ -378,20 +365,19 @@ function editPlanListSeq(editedItem, dateTime) {
   instertItem(editedItem, pos);
 }
 
+// prints planner list on print button click
 document.getElementById("print_button").addEventListener('click', () => {
   window.print();
-  console.log("printed!");
 });
+// clears planner list on clear button click
 document.getElementById("clear_button").addEventListener("click", () => {
   const planList = document.getElementById('plan_list');
   planList.innerHTML = '';
 });
+// emails planner list on email button click
 document.getElementById("email_button").addEventListener('click', () => {
   console.log("emailed!");
 });
 
 document.addEventListener('DOMContentLoaded', init);
-
-
-  // Nearby Search
 
