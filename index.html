@@ -9,6 +9,32 @@
 
   </head>
   <body>
+    <div class="email_popup">
+      <form action="https://api.web3forms.com/submit" method="POST">
+
+        <!-- Replace with your Access Key -->
+        <input type="hidden" name="access_key" value="5635d66e-3caa-45e9-b0f9-c909a0d2c655">
+    
+        <!-- Form Inputs. Each input must have a name="" attribute -->
+        <dialog class="email_popup_form_row">
+          <label>Name:</label>
+          <input type="text" name="name" required>
+        </div>
+        <div class="email_popup_form_row"> 
+          <label>Email:</label>
+          <input type="email" name="email" required>
+        </dialog>
+    
+        <!-- Honeypot Spam Protection -->
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+    
+        <!-- Custom Confirmation / Success Page -->
+        <!-- <input type="hidden" name="redirect" value="https://mywebsite.com/thanks.html"> -->
+    
+        <button type="submit">Submit Form</button>
+    
+    </form>
+    </div>
     <div class="planner">
       <div class="header">
         <a href="#">
@@ -21,8 +47,8 @@
           <button id="clear_button" class="button_style_2">Clear Items</button>
         </div>
         <div class="output_buttons">
-          <button id="email_button"><img src="/icons8-email-100.png" alt="email button"></button>
-          <button id="print_button"><img src="/icons8-print-100.png" alt="print button"></button>
+          <button id="email_button"><img src="./icons8-email-100.png" alt="email button"></button>
+          <button id="print_button"><img src="./icons8-print-100.png" alt="print button"></button>
         </div>
       </div>
       <div id="plan_list"></div>
@@ -31,7 +57,6 @@
     <script>
     (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
       ({key: "AIzaSyCvD4e8DS0mw-dLxh2AbXBAfduvaIHROrM", v: "alpha"});  
-
     </script>
   </body>
 </html>

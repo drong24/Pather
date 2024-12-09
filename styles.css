@@ -25,6 +25,19 @@ body {
   float: right;
 }
 
+.email_popup {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  background-color: bisque;
+  z-index: 1;
+  padding: 30px;
+}
+
+.email_popup_form_row {
+  padding: 10px;
+}
+
 /* info window styling */
 .info_window {
   height: 180px;

@@ -376,6 +376,7 @@ document.getElementById("clear_button").addEventListener("click", () => {
 });
 // emails planner list on email button click
 document.getElementById("email_button").addEventListener('click', () => {
+  
   console.log("emailed!");
 });
 
