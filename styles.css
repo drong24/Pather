@@ -27,6 +27,7 @@ body {
 
 .email_popup {
   position: absolute;
+  display: none;
   top: 25%;
   left: 25%;
   background-color: bisque;

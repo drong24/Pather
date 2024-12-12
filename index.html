@@ -16,14 +16,14 @@
         <input type="hidden" name="access_key" value="5635d66e-3caa-45e9-b0f9-c909a0d2c655">
     
         <!-- Form Inputs. Each input must have a name="" attribute -->
-        <dialog class="email_popup_form_row">
+        <div class="email_popup_form_row">
           <label>Name:</label>
           <input type="text" name="name" required>
         </div>
         <div class="email_popup_form_row"> 
           <label>Email:</label>
           <input type="email" name="email" required>
-        </dialog>
+        </div>
     
         <!-- Honeypot Spam Protection -->
         <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
@@ -31,7 +31,8 @@
         <!-- Custom Confirmation / Success Page -->
         <!-- <input type="hidden" name="redirect" value="https://mywebsite.com/thanks.html"> -->
     
-        <button type="submit">Submit Form</button>
+        <button type="submit">Submit</button>
+        <button id="popup_form_close_buttton" type="reset">Close</button>
     
     </form>
     </div>

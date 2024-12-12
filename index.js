@@ -376,7 +376,10 @@ document.getElementById("clear_button").addEventListener("click", () => {
 });
 // emails planner list on email button click
 document.getElementById("email_button").addEventListener('click', () => {
-  
+  document.querySelector(".email_popup").style =  "display: flex"
+  document.getElementById("popup_form_close_buttton").addEventListener("click", () => {
+    document.querySelector(".email_popup").style =  "display: none"
+  })
   console.log("emailed!");
 });
 
