@@ -9,33 +9,6 @@
 
   </head>
   <body>
-    <div class="email_popup">
-      <form action="https://api.web3forms.com/submit" method="POST">
-
-        <!-- Replace with your Access Key -->
-        <input type="hidden" name="access_key" value="5635d66e-3caa-45e9-b0f9-c909a0d2c655">
-    
-        <!-- Form Inputs. Each input must have a name="" attribute -->
-        <div class="email_popup_form_row">
-          <label>Name:</label>
-          <input type="text" name="name" required>
-        </div>
-        <div class="email_popup_form_row"> 
-          <label>Email:</label>
-          <input type="email" name="email" required>
-        </div>
-    
-        <!-- Honeypot Spam Protection -->
-        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-    
-        <!-- Custom Confirmation / Success Page -->
-        <!-- <input type="hidden" name="redirect" value="https://mywebsite.com/thanks.html"> -->
-    
-        <button type="submit">Submit</button>
-        <button id="popup_form_close_buttton" type="reset">Close</button>
-    
-    </form>
-    </div>
     <div class="planner">
       <div class="header">
         <a href="#">
@@ -51,6 +24,24 @@
           <button id="email_button"><img src="./icons8-email-100.png" alt="email button"></button>
           <button id="print_button"><img src="./icons8-print-100.png" alt="print button"></button>
         </div>
+      </div>
+      <div class="email_popup">
+        <form action="https://api.web3forms.com/submit" method="POST">
+  
+          <!-- Replace with your Access Key -->
+          <input type="hidden" name="access_key" value="5635d66e-3caa-45e9-b0f9-c909a0d2c655">
+      
+          <!-- Form Inputs. Each input must have a name="" attribute -->
+          <input class="email_input" type="email" name="email" placeholder="sam123@gmail.com" required>
+      
+          <!-- Honeypot Spam Protection -->
+          <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+      
+          <!-- Custom Confirmation / Success Page -->
+          <!-- <input type="hidden" name="redirect" value="https://mywebsite.com/thanks.html"> -->
+      
+          <button type="submit">Submit</button>      
+      </form>
       </div>
       <div id="plan_list"></div>
     </div>
