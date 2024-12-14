@@ -5,6 +5,7 @@ let infowindow;
 let marker;
 let place;
 
+
 async function init() {
 
   const { Map } = await google.maps.importLibrary("maps");
@@ -53,10 +54,12 @@ async function init() {
   mapDiv.appendChild(nearbyButtons);
 
   var nearbyButtonsChildren = document.querySelectorAll(".search_button"); 
-  console.log(nearbyButtonsChildren);
+
+  // queries for location type from search button click
   nearbyButtonsChildren.forEach(button => {
     button.addEventListener("click", async () => {
       console.log(button.innerHTML);
+      
       console.log(map.center.lat());
       const request = {
         fields: ["displayName", "location", "businessStatus"],
@@ -85,7 +88,6 @@ async function init() {
             title: place.displayName,
           });
           bounds.extend(place.location);
-          console.log(place);
         });
         map.fitBounds(bounds);
       } else {
@@ -363,6 +365,13 @@ function editPlanListSeq(editedItem, dateTime) {
   removeItem(editedItem);
   var pos = getListPosition(dateTime);
   instertItem(editedItem, pos);
+}
+
+// Sets the map on markers
+function setMapOnAll(map) {
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
 }
 
 // prints planner list on print button click

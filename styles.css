@@ -2,7 +2,6 @@
 * {
   padding: 0px;
   margin: 0px;
-  border: 1px solid black;
 }
 
 html,
@@ -29,11 +28,12 @@ body {
 .email_popup {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 15px;
 }
 
 .email_input{
   line-height: 21px;
-  width: 80%;
+  width: 83%;
   padding: 2px; 
 }
 
