@@ -2,6 +2,7 @@
 * {
   padding: 0px;
   margin: 0px;
+  border: 1px solid black;
 }
 
 html,
@@ -33,7 +34,7 @@ body {
 .email_input{
   line-height: 21px;
   width: 80%;
-  padding: 2px;
+  padding: 2px; 
 }
 
 .email_popup > form {
