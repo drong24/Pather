@@ -26,10 +26,8 @@ body {
 }
 
 .email_popup {
-  display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
-  display: none;
 }
 
 .email_input{
